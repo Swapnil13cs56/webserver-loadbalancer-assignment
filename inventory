@@ -1,0 +1,6 @@
+[web]
+web1 ansible_host=192.168.56.101 ansible_ssh_pass=vagrant ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+web2 ansible_host=192.168.56.102 ansible_ssh_pass=vagrant ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[loadbalancer]
+loadbalancer ansible_host=192.168.56.103 ansible_ssh_pass=vagrant ansible_ssh_common_args='-o StrictHostKeyChecking=no'

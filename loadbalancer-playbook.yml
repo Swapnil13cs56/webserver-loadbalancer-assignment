@@ -1,0 +1,50 @@
+---
+- hosts: loadbalancer
+  tasks:
+    - ping:
+
+    - name: update apt cache
+      become: yes
+      apt: update_cache=yes cache_valid_time=3600
+
+    - name: install haproxy
+      become: yes
+      apt: name=haproxy state=present
+    
+    - name: Enable init script
+      become: yes
+      replace: 
+          dest='/etc/default/haproxy'
+          regexp='ENABLED=0'
+          replace='ENABLED=1'  
+    
+    - name: Creates directory
+      become: yes
+      file:
+        path: /run/haproxy
+        state: directory
+    
+    - name: Update HAProxy config (Round robbin)
+      become: yes
+      template: 
+          src=haproxy.cfg 
+          dest=/etc/haproxy/haproxy.cfg 
+          backup=yes
+      when: sticky_session == "false"
+      notify: 
+        - restart haproxy
+
+    - name: Update HAProxy config (Sticky session)
+        become: yes
+        template: 
+            src=haproxy.cfg 
+            dest=/etc/haproxy/haproxy.cfg 
+            backup=yes
+        when: sticky_session == "true"
+        notify: 
+          - restart haproxy
+
+  handlers:
+  - name: restart haproxy
+    become: yes
+    service: name=haproxy state=restarted 

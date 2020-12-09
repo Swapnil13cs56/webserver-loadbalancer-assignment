@@ -1,0 +1,39 @@
+---
+- hosts: web
+  become: true
+  become_method: sudo
+  tasks:
+    - name: ensure nginx is at the latest version
+      apt: name=nginx state=latest
+     
+    
+    - name: start nginx
+      service:
+          name: nginx
+          state: started
+     
+
+    - name: copy the nginx config file and restart nginx
+      copy:
+        src: /home/vagrant/ansible-files/static_site.cfg
+        dest: /etc/nginx/sites-available/static_site.cfg
+     
+
+    - name: create symlink
+      file:
+        src: /etc/nginx/sites-available/static_site.cfg
+        dest: /etc/nginx/sites-enabled/default
+        state: link
+     
+
+    - name: copy the content of the web site
+      copy:
+        src: /home/vagrant/ansible-files/static-site-src/
+        dest: /home/vagrant/static-site
+     
+      
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+     
