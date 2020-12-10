@@ -5,9 +5,14 @@ This is a sample project which consists of 2 webservers and one loadbalancer usi
 ## Pre-requisites
 
 Following softwares/packages must be install in your system for running this project :-
+My Environment: **Windows 10 Pro**  
+
 
 Virtualbox (https://www.virtualbox.org/)  
 Vagrant (https://www.vagrantup.com/)   
+
+**Note:** The setup is performed on a Windows system, if possible please reproduce the environment on Windows system to get the exact work loaded up
+
 
 ## Project Setup using Vagrant, Virtual Box and Ansible
 
