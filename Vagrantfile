@@ -6,7 +6,6 @@ Vagrant.configure("2") do |config|
     web_server_1.vm.box_url = "ubuntu/trusty64"
 
     web_server_1.vm.network :private_network, ip: "192.168.56.101"
-    # web_server_1.vm.provision "file", source: ".vagrant/machines/web_server_1/virtualbox/private_key", destination: "$HOME/.web_server_1"
 
   end
 
@@ -39,9 +38,10 @@ Vagrant.configure("2") do |config|
     master.vm.provision "file", source: "web-server-playbook.yml", destination: "$HOME/"
     master.vm.provision "file", source: "loadbalancer-playbook.yml", destination: "$HOME/"
     master.vm.provision "file", source: "haproxy.cfg", destination: "$HOME/"
+    master.vm.provision "file", source: "haproxy_sticky_session.cfg", destination: "$HOME/"
     master.vm.provision "file", source: "inventory", destination: "$HOME/"
     master.vm.provision "file", source: "static_site.cfg", destination: "$HOME/ansible-files/static_site.cfg"
-    master.vm.provision "file", source: "static-site-src/", destination:"$HOME/ansible-files/"
+    # master.vm.provision "file", source: "static-site-src/", destination:"$HOME/ansible-files/"
     
 
     master.vm.provision "shell", inline: <<-SHELL

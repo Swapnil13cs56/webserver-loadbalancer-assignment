@@ -2,6 +2,10 @@
 - hosts: web
   become: true
   become_method: sudo
+
+  vars:
+    html: "Hello world!"
+    ip: "{{ inventory_hostname }}"
   tasks:
     - name: ensure nginx is at the latest version
       apt: name=nginx state=latest
@@ -24,13 +28,29 @@
         src: /etc/nginx/sites-available/static_site.cfg
         dest: /etc/nginx/sites-enabled/default
         state: link
-     
 
+  #Logic to add webserver identifier and ip along with Hello World
+    - name: Setting html for instance 1
+      set_fact:
+        html : "Hello World from web_server_1, ip: {{ inventory_hostname }}"
+      when: ip == "{{ groups['web'][0] }}"
+
+    - name: Setting html for instance 2
+      set_fact:
+        html : "Hello World from web_server_2, ip: {{ inventory_hostname }}"
+      when: ip == "{{ groups['web'][1] }}"
+
+    - name: Create a static-site directory
+      file:
+        path: /home/vagrant/static-site
+        state: directory
+ 
     - name: copy the content of the web site
       copy:
-        src: /home/vagrant/ansible-files/static-site-src/
-        dest: /home/vagrant/static-site
-     
+        dest: /home/vagrant/static-site/index.html
+        content: "{{ html }}"
+        mode: 0644
+      become: true
       
     - name: restart nginx
       service:

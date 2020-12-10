@@ -35,14 +35,14 @@
         - restart haproxy
 
     - name: Update HAProxy config (Sticky session)
-        become: yes
-        template: 
-            src=haproxy.cfg 
-            dest=/etc/haproxy/haproxy.cfg 
-            backup=yes
-        when: sticky_session == "true"
-        notify: 
-          - restart haproxy
+      become: yes
+      template: 
+          src=haproxy_sticky_session.cfg 
+          dest=/etc/haproxy/haproxy.cfg 
+          backup=yes
+      when: sticky_session == "true"
+      notify: 
+        - restart haproxy
 
   handlers:
   - name: restart haproxy

@@ -41,6 +41,6 @@ Being on a windows system, I had to copy some of the files on the newly created 
 Yes, I have added both the configurations for loadbalancer. Based on the value of sticky_session passed, playbook will set haproxy.cfg file in loadbalance vm. 
 
 - Return instance identifier of your webserver in addition to “Hello World”
-Yes, I have included short javascript function which returns the URL of the page, which is the actual IP address in our case  
+Yes, when loading with the loadbalancer ip, the page will display from which ip (or host) its being served
 
 
